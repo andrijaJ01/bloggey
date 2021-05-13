@@ -158,13 +158,16 @@ def read_item(item: str, q: str = None):
 <p>that’s great, we have already created an API having two endpoints:</p>
 
 <ul>
-<li><code>http://127.0.0.1:8000/</code> doesn’t take any parameters and it simply returns a JSON response.</li>
-<li><code>http://127.0.0.1:8000/items/{item}</code> takes a parameter item of type str and optional str query parameter q.</li>
+<li><p><code>http://127.0.0.1:8000/</code>: doesn’t take any parameters and it simply returns a JSON response.</p></li>
+<li><p><code>http://127.0.0.1:8000/items/{item}</code>: takes a parameter item of type str and optional str query parameter q.</p></li>
 </ul>
 
-<p>another good feature of FastAPI is that it provides an interactive API documentation, simply visit 
-- <code>http://127.0.0.1:8000/docs</code>
-- <code>http://127.0.0.1:8000/redoc</code>.</p>
+<p>another good feature of FastAPI is that it provides an interactive API documentation, simply visit:</p>
+
+<ul>
+<li><p><code>http://127.0.0.1:8000/docs</code></p></li>
+<li><p><code>http://127.0.0.1:8000/redoc</code>.</p></li>
+</ul>
 
 <p>Now let’s go ahead and build our polls API. The endpoints that are created above are static, they don’t interact with the database. In the next section you will learn how we can use <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> for ORM and <a href="https://pydantic-docs.helpmanual.io/">Pydantic</a> to create models/schemas to make our APIs dynamic.</p>
 
