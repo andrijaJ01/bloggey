@@ -169,9 +169,21 @@ def read_item(item: str, q: str = None):
 <li><p><code>http://127.0.0.1:8000/redoc</code>.</p></li>
 </ul>
 
-<p>Now let’s go ahead and build our polls API. The endpoints that are created above are static, they don’t interact with the database. In the next section you will learn how we can use <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> for ORM and <a href="https://pydantic-docs.helpmanual.io/">Pydantic</a> to create models/schemas to make our APIs dynamic.</p>
+<p>Now let’s build our polls API. The endpoints that are created above are static, so they don’t interact with the database. In the next section we will use <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> for ORM and <a href="https://pydantic-docs.helpmanual.io/">Pydantic</a> to create models/schemas to make our APIs dynamic.</p>
 
 <p>This post assumes that you’re familiar with <code>SQLAlchemy</code>, you can refer this <a href="https://www.sqlalchemy.org/">docs</a> for more details.</p>
+
+<p>Well make following endpoints:</p>
+
+<ul>
+<li><p>create poll question</p></li>
+<li><p>list all poll questions</p></li>
+<li><p>get question detail</p></li>
+<li><p>edit poll question</p></li>
+<li><p>delete poll question</p></li>
+<li><p>create choice for a particular poll question</p></li>
+<li><p>update votes for a particular question</p></li>
+</ul>
 
       </div>
     </div>
