@@ -299,12 +299,123 @@ class QuestionInfo(Question):
 <pre><code>question_text = Column(String)
 </code></pre>
 
-<p>while in pydantic uses <code>:</code></p>
+<p>while pydantic uses <code>:</code></p>
 
 <pre><code>question_text:str
 </code></pre>
 
 <p>Pyndatic models/schemas will be mapped to the incoming data (data in POST, PUT requests) and to the response data returned from the API itself.</p>
+
+<p>We have created base classes <code>QuestionBase</code> and <code>ChoiceBase</code> that extends pydantic BaseModel to hold attributes which are common for creating or reading data and created other classes that inherit from these base classes, the reason being we want specific attributes for creation and reading.</p>
+
+<p>like for example - for creating a choice we need <code>choice_text</code> and votes (if not passed, it defaults to 0) so we will use <code>ChoiceCreate</code> and for reading the choice, we want to return id, <code>choice_text</code> and votes and in this case we will use <code>ChoiceList</code>.</p>
+
+<p>Another important thing to understand is the use of <code>orm_mode = True</code>, notice we have added a <code>class Config</code> and have set orm<em>mode = True, this is because by default Pydantic model could read the data from dict and it can’t read the data if the data is an ORM model so with the orm</em>mode = True added to our class, Pydantic model can also read the data from the object something like <code>data.question_text</code>.</p>
+
+<p>Ok, we will now create <code>pollsapi/crud.py</code> which will contain all the functions to perform <code>CRUD</code> (<code>C</code>reate, 
+<code>R</code>etrieve, 
+<code>U</code>pdate 
+and <code>D</code>elete) operations.</p>
+
+<p><em>crud.py</em></p>
+
+<pre><code>from sqlalchemy.orm import Session
+
+from models import Base, Question, Choice
+import schema
+
+# Question
+
+def create_question(db: Session, question: schema.QuestionCreate):
+    obj = Question(**question.dict())
+    db.add(obj)
+    db.commit()
+    return obj
+
+def get_all_questions(db: Session):
+    return db.query(Question).all()
+
+def get_question(db:Session, qid):
+    return db.query(Question).filter(Question.id == qid).first()
+
+def edit_question(db: Session, qid, question: schema.QuestionCreate):
+    obj = db.query(Question).filter(Question.id == qid).first()
+    obj.question_text = question.question_text
+    obj.pub_date = question.pub_date
+    db.commit()
+    return obj
+
+def delete_question(db: Session, qid):
+    db.query(Question).filter(Question.id == qid).delete()
+    db.commit()
+
+# Choice
+
+def create_choice(db:Session, qid: int, choice: schema.ChoiceCreate):
+    obj = Choice(**choice.dict(), question_id=qid)
+    db.add(obj)
+    db.commit()
+    return obj
+
+def update_vote(choice_id: int, db:Session):
+    obj = db.query(Choice).filter(Choice.id == choice_id).first()
+    obj.votes += 1
+    db.commit()
+    return obj
+</code></pre>
+
+<p>with this file we have created all the utility functions which will be used in the API .</p>
+
+<p>Now we'll make <code>pollsapi/main.py</code>, which will make use of all the files we created above.</p>
+
+<p><strong>Create a poll question</strong></p>
+
+<p><em>main.py</em></p>
+
+<pre><code>from fastapi import FastAPI, HTTPException, Response, Depends
+import schema
+from typing import List
+
+from sqlalchemy.orm import Session
+
+import crud
+from database import SessionLocal, engine
+from models import Base
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+# Dependency
+def get_db():
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
+
+
+## Question
+
+@app.post("/questions/", response_model=schema.QuestionInfo)
+def create_question(question: schema.QuestionCreate, db: Session = Depends(get_db)):
+    return crud.create_question(db=db, question=question)
+</code></pre>
+
+<ul>
+<li><p>line <code>Base.metadata.create_all(bind=engine)</code> creates database tables utilizing SQLAlchemy models defined above in <code>models.py</code></p></li>
+<li><p>function <code>create_question</code> is decorated using the <code>app</code> object created above which is an instance of <code>FastAPI</code>, it takes two arguments <code>path</code> and <code>response_model</code>. response_model returns the schema <code>QuestionInfo</code> so the endpoint will return the fields <code>id</code>, <code>question_text</code> and <code>pub_date</code>.</p></li>
+<li><p>We have created a function <code>create_question</code>, first argument receives the request data and maps it to the schema <code>QuestionCreate</code> which has the fields <code>question_text</code> and <code>pub_date</code> and the second argument creates a session/request and then it gets closed after the request is completed.</p></li>
+</ul>
+
+<p>now visit:</p>
+
+<pre><code>http:127.0.0.1/docs
+</code></pre>
+
+<p>you should see something like:</p>
+
+<p><img src="assets/img/fastapidocs.png" alt="img" /></p>
 
       </div>
     </div>
