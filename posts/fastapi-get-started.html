@@ -114,11 +114,21 @@
 
 <p><strong>Basic Example</strong></p>
 
-<ul>
-<li>[ ] this is not checked</li>
-<li>[ ] this is too</li>
-<li>[x] but this is checked</li>
-</ul>
+<p>```
+    from fastapi import FastAPI</p>
+
+<pre><code>app = FastAPI()
+
+@app.get("/")
+def index():
+    return {"message": "Welcome to the world of FastAPI!"}
+
+@app.get("/items/{item}")
+def read_item(item: str, q: str = None):
+    return {"item": item, "q": q}
+</code></pre>
+
+<p>```</p>
 
       </div>
     </div>
