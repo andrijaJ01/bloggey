@@ -114,9 +114,11 @@
 
 <p><strong>Basic Example</strong></p>
 
-<p>```from fastapi import FastAPI</p>
+<p>```</p>
 
-<pre><code>app = FastAPI()
+<pre><code>from fastapi import FastAPI
+
+app = FastAPI()
 
 @app.get("/")
 def index():
@@ -124,8 +126,10 @@ def index():
 
 @app.get("/items/{item}")
 def read_item(item: str, q: str = None):
-    return {"item": item, "q": q}```
+    return {"item": item, "q": q}
 </code></pre>
+
+<p>```</p>
 
       </div>
     </div>
