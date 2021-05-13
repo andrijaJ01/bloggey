@@ -185,6 +185,126 @@ def read_item(item: str, q: str = None):
 <li><p>update votes for a particular question</p></li>
 </ul>
 
+<p><strong>Project structure</strong></p>
+
+<p>The project structure will be following:</p>
+
+<pre><code>└───pollsapi
+│--- crud.py
+│--- database.py
+│--- main.py
+│--- models.py
+│--- schemas.py
+</code></pre>
+
+<p><strong>database</strong></p>
+
+<p><em>database.py</em></p>
+
+<pre><code>from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+
+SQLALCHEMY_DATABASE_URL = "postgresql://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/DATABASE_NAME"
+
+engine = create_engine(
+SQLALCHEMY_DATABASE_URL
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+</code></pre>
+
+<p><em>models.py</em></p>
+
+<pre><code>from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
+
+from database import Base
+
+
+class Question(Base):
+    __tablename__ = "question"
+    id = Column(Integer, primary_key=True)
+    question_text = Column(String(200))
+    pub_date = Column(DateTime)
+
+    choices = relationship('Choice', back_populates="question")
+
+
+class Choice(Base):
+    __tablename__ = "choice"
+    id = Column(Integer, primary_key=True)
+    question_id = Column(Integer, ForeignKey('question.id', ondelete='CASCADE'))
+    choice_text = Column(String(200))
+    votes = Column(Integer, default=0)
+
+    question = relationship("Question", back_populates="choices")
+</code></pre>
+
+<p>bt doing this we have created <code>relationship</code> provided by <code>SQLAlchemy ORM</code>. By using it we can simply access <code>question.choices</code> to get all choices for that particular question.</p>
+
+<p>Simmilarly we can use <code>choice.question</code> to get question object that is related to that choice.</p>
+
+<p><strong>Schemas</strong></p>
+
+<p><em>schemas.py</em></p>
+
+<pre><code>from datetime import datetime
+
+from pydantic import BaseModel
+from typing import List
+
+
+# Choice schema
+
+class ChoiceBase(BaseModel):
+    choice_text: str
+    votes: int = 0
+
+class ChoiceCreate(ChoiceBase):
+    pass
+
+class ChoiceList(ChoiceBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+# Question schema
+
+class QuestionBase(BaseModel):
+    question_text: str
+    pub_date: datetime
+
+class QuestionCreate(QuestionBase):
+    pass
+
+class Question(QuestionBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class QuestionInfo(Question):
+    choices: List[ChoiceList] = []
+</code></pre>
+
+<p>Attributes in SQLAlchemy is different than in pydantic. in sqlalchemy they are defined with <code>=</code> and type is passed in <code>Column</code> like in:</p>
+
+<pre><code>question_text = Column(String)
+</code></pre>
+
+<p>while in pydantic uses <code>:</code></p>
+
+<pre><code>question_text:str
+</code></pre>
+
+<p>Pyndatic models/schemas will be mapped to the incoming data (data in POST, PUT requests) and to the response data returned from the API itself.</p>
+
       </div>
     </div>
   </div>
