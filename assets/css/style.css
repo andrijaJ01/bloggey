@@ -1,6 +1,7 @@
 pre{
     color:#fcfcfc;
     background-color:#242424;
-    
+    display:block;
+    font-size:85%;
+    border:2px solid red;
 }
-
