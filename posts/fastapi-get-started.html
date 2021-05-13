@@ -171,7 +171,7 @@ def read_item(item: str, q: str = None):
 
 <p>Now let’s build our polls API. The endpoints that are created above are static, so they don’t interact with the database. In the next section we will use <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> for ORM and <a href="https://pydantic-docs.helpmanual.io/">Pydantic</a> to create models/schemas to make our APIs dynamic.</p>
 
-<p>This post assumes that you’re familiar with <code>SQLAlchemy</code>, you can refer this <a href="https://www.sqlalchemy.org/">docs</a> for more details.</p>
+<p>This post assumes that you’re familiar with <code>SQLAlchemy</code> and that you are using Linux, you can refer this <a href="https://www.sqlalchemy.org/">docs</a> for more details.</p>
 
 <p><strong>Well make following endpoints</strong>:</p>
 
@@ -189,13 +189,12 @@ def read_item(item: str, q: str = None):
 
 <p>The project structure will be following:</p>
 
-<pre><code>./pollsapi━━━━━┓
-┏━━━━━━━━━━━━━━┛
-┣━━━━━crud.py
-┣━━━━━database.py
-┣━━━━━main.py
-┣━━━━━models.py
-┣━━━━━schemas.py
+<pre><code>┏&gt;pollsapi
+┣━━━━━&gt;crud.py
+┣━━━━━&gt;database.py
+┣━━━━━&gt;main.py
+┣━━━━━&gt;models.py
+┣━━━━━&gt;schemas.py
 </code></pre>
 
 <p><strong>database</strong></p>
