@@ -114,10 +114,11 @@
 
 <p><strong>Basic Example</strong></p>
 
-<p>```python
-    from fastapi import FastAPI</p>
+<p>```python</p>
 
-<pre><code>app = FastAPI()
+<pre><code>from fastapi import FastAPI
+
+app = FastAPI()
 
 @app.get("/")
 def index():
