@@ -101,8 +101,8 @@
 <p>To get started with FastAPI you should have two things installed:</p>
 
 <ul>
-<li>FastAPI</li>
-<li>Uvicorn</li>
+<li>FastAPI.</li>
+<li>Uvicorn: the ASGI server required for FastAPI.</li>
 </ul>
 
 <p>install them with:</p>
@@ -111,6 +111,22 @@
 <li><code>pip install fastapi</code></li>
 <li><code>sudo pacman -S uvicorn</code> or alternative for your distro.</li>
 </ul>
+
+<p><strong>Basic Example</strong></p>
+
+<p>```
+from fastapi import FastAPI</p>
+
+<p>app = FastAPI()</p>
+
+<p>@app.get("/")
+def index():
+    return {"message": "Welcome to the world of FastAPI!"}</p>
+
+<p>@app.get("/items/{item}")
+def read_item(item: str, q: str = None):
+    return {"item": item, "q": q}
+```</p>
 
       </div>
     </div>
