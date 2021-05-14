@@ -10,7 +10,7 @@ header.masterhead{
     height:100vh;
 }
 img{width:100%;height:auto}
-@media (width:768px){
+@media (width:576px){
     
     header{
         height:80vh;
