@@ -492,7 +492,23 @@ def update_vote(choice_id: int, db: Session = Depends(get_db)):
     return crud.update_vote(choice_id=choice_id, db=db)
 </code></pre>
 
-<p><strong>the following are the endpoints for Question and Choice</strong></p>
+<p><strong>Endpoints</strong></p>
+
+<p>the following are the endpoints for Question and Choice</p>
+
+<ul>
+<li><p><em>Create</em> question - <code>POST http://127.0.0.1:8000/questions/</code></p></li>
+<li><p><em>List</em> all questions - <code>GET http://127.0.0.1:8000/questions/</code></p></li>
+<li><p><em>Retrieve</em> a particular question - <code>GET http://127.0.0.1:8000/questions/{qid}</code></p></li>
+<li><p><em>Edit</em> a particular question - <code>PUT http://127.0.0.1:8000/questions/{qid}</code></p></li>
+<li><p><em>Delete</em> a particular question - <code>DELETE http://127.0.0.1:8000/questions/{qid}</code></p></li>
+<li><p><em>Create</em> choice for a particular poll question - <code>POST http://127.0.0.1:8000/questions/{qid}/choice</code></p></li>
+<li><p><em>Update</em> votes for a particular question - <code>PUT http://127.0.0.1:8000/choices/{choice_id}/vote</code></p></li>
+</ul>
+
+<p><strong>source code</strong></p>
+
+<p>You can find source code <a href="https://github.com/andrijaJ01/pollsapi">here</a></p>
 
       </div>
     </div>
