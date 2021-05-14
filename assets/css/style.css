@@ -5,10 +5,10 @@ pre{
     font-size:85%;
     border-left:8px solid #ee0000;
     padding-left:5px;
-}
+}/*
 header.masterhead{
     height:100vh;
-}
+}*/
 img{width:100%;height:auto}
 @media (width:576px){
     
