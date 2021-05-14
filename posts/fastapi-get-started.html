@@ -129,7 +129,7 @@ def read_item(item: str, q: str = None):
     return {"item": item, "q": q}
 </code></pre>
 
-<p>run it with:</p>
+<p>run the example with:</p>
 
 <p><code>uvicorn filename:app --reload</code></p>
 
@@ -418,7 +418,81 @@ def create_question(question: schema.QuestionCreate, db: Session = Depends(get_d
 
 <p>click on that section and it will expand, now click on <code>Try it out</code> to test your shiny new API.</p>
 
-<p><strong><em>to be continued</em></strong></p>
+<p><strong>List all poll questions</strong></p>
+
+<p>We will now create an endpoint to get all our poll questions, for this we will use <code>@app.get</code>, add another function in <code>pollsapi/main.py</code></p>
+
+<pre><code>@app.get("/questions/", response_model=List[schema.Question])
+def get_questions(db: Session = Depends(get_db)):
+    return crud.get_all_questions(db=db)
+</code></pre>
+
+<p>notice the use of <code>List</code> in <code>response_model</code>, <code>crud.get_all_questions</code> returns a list of objects and not just an object so we should let our framework know that. if we remove the List our API will throw an error. At this point when you visit:</p>
+
+<pre><code>http://127.0.0.1:8000/docs
+</code></pre>
+
+<p>you should see two sections:</p>
+
+<ul>
+<li><code>POST /questions/</code> and </li>
+<li><code>GET /questions/</code> </li>
+</ul>
+
+<p>click on GET section and Try it out and you should see a response something like below:</p>
+
+<pre><code>[
+{
+    "question_text": "What is fastAPI?",
+    "pub_date": "2020-05-14T12:58:05.043000",
+    "id": 1
+}
+]
+</code></pre>
+
+<p><em>_ Retrieve, Edit and Delete a poll question</em>_</p>
+
+<pre><code>def get_question_obj(db, qid):
+    obj = crud.get_question(db=db, qid=qid)
+    if obj is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+    return obj
+
+@app.get("/questions/{qid}", response_model=schema.QuestionInfo)
+def get_question(qid: int, db: Session = Depends(get_db)):
+    return get_question_obj(db=db, qid=qid)
+
+@app.put("/questions/{qid}", response_model=schema.QuestionInfo)
+def edit_question(qid: int, question: schema.QuestionCreate, db: Session = Depends(get_db)):
+    get_question_obj(db=db, qid=qid)
+    obj = crud.edit_question(db=db, qid=qid, question=question)
+    return obj
+
+@app.delete("/questions/{qid}")
+def delete_question(qid: int, db: Session = Depends(get_db)):
+    get_question_obj(db=db, qid=qid)
+    crud.delete_question(db=db, qid=qid)
+    return {"detail": "Question deleted", "status_code": 204}
+</code></pre>
+
+<p>Notice how we have used different response_model for <code>get_questions</code> and <code>get_question</code>, this is because we wanted to show choices in the API response only in case of <code>Question detail API</code> and not for <code>Question list API</code>.</p>
+
+<p><strong>create choice for a particular poll question</strong></p>
+
+<pre><code>@app.post("/questions/{qid}/choice", response_model=schema.ChoiceList)
+def create_choice(qid: int, choice: schema.ChoiceCreate, db: Session = Depends(get_db)):
+    get_question_obj(db=db, qid=qid)
+    return crud.create_choice(db=db, qid=qid, choice=choice)
+</code></pre>
+
+<p><strong>Update votes for question</strong></p>
+
+<pre><code>@app.put("/choices/{choice_id}/vote", response_model=schema.ChoiceList)
+def update_vote(choice_id: int, db: Session = Depends(get_db)):
+    return crud.update_vote(choice_id=choice_id, db=db)
+</code></pre>
+
+<p><strong>the following are the endpoints for Question and Choice</strong></p>
 
       </div>
     </div>
