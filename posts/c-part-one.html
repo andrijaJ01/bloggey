@@ -58,55 +58,179 @@
   </div>
 </nav>
   
+<!--
+
+<header class="masthead" style="background-image: url(&quot;assets/img/0256.jpg&quot;);">
+   
+<div class="overlay"><a href="http://github.com/fer"></a></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-auto">
+      <div class="post-heading">
+        <h1>Learn C - Part 1</h1>
+        <h2 class="subheading">Learn basics of c and set up enviroment.</h2>
+	<span class="meta" style="font-family: Alike, serif;filter: brightness(124%) contrast(200%);font-size: 19px;">
+	  Posted by&nbsp;
+	  <a href="about.html">Andrija Jovnovic</a>
+	  &nbsp;on 2020-05-15
+	</span>
+      </div>
+    </div>
+    
+  </div>
+</div>
+</header>
+-->
 
 <header class="masthead" style="background-image: url(&quot;assets/img/0010.jpg&quot;);">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
       <div class="col-md-10 col-lg-8 mx-auto">
-        <div class="site-heading">
-          <h1 style="margin-top: 1em;">Bloggy</h1>
-	  <span class="subheading">Static blog generator</span>
-	  <a class="btn btn-outline-light" role="button" data-bs-hover-animate="jello" style="margin-top: 2rem;" href="#content">To the post list&nbsp;
-	    <i class="fas fa-caret-down"></i>
-	  </a>
-	</div>
+      <div class="post-heading my-5" >
+        <h1>Learn C - Part 1</h1>
+        <h2 class="subheading">Learn basics of c and set up enviroment.</h2>
+	<span class="meta" style="font-family: Alike, serif;filter: brightness(124%) contrast(200%);font-size: 20px;">
+	  Posted by&nbsp;
+	  <a href="about.html">Andrija Jovnovic</a>
+	  &nbsp;on 2020-05-15
+	</span>
+      </div>
+
       </div>
     </div>
   </div>
 </header>
 
-<div class="container" id="content">
-  <div class="row">
-    <div class="col-md-10 col-lg-8">
+<article>
+  <div class="container">
+    <div id='content' class="row">
+      <div class="col-md-10 col-lg-8 mx-auto">
+	<h1>Learn C part 1</h1>
 
-      <div class="post-preview">
-        <a href="/posts/c-part-one.html">
-          <h2 class="post-title">Learn C - Part 1</h2>
-          <h3 class="post-subtitle">Learn basics of c and set up enviroment.</h3>
-        </a>
-        <p class="post-meta">Posted by&nbsp;<a href="/about.html"><em>Andrija Jovnovic on 2020-05-15</em></a></p>
+<p>C programming is an imperative procedural language. It was designed to compiled using a relatively straightforward compiler and it also provides the access to memory to provide language constructs to follow the machine instructions.</p>
+
+<p>In this section, you will learn how to start with c programming and also I will explain this by using a simple and easy example program which prints the “Hello World”. Apart from this, you will also learn the below things:</p>
+
+<ul>
+<li><p>Basic commands of c programming.</p></li>
+<li><p>How to write a C program.</p></li>
+<li><p>A simple C program with an output.</p></li>
+<li><p>How to use cmake </p></li>
+<li><p>How to compile and execute a C program</p></li>
+</ul>
+
+<h4>C Hello world program</h4>
+
+<pre><code>#include &lt;stdio.h&gt;
+int main() {
+printf("Hello, World!");
+return 0;
+}
+</code></pre>
+
+<p>In code above we can recognize following:</p>
+
+<ul>
+<li><p><code>#include</code>: Used to "<em>Import</em>" libraries for use, like <code>stdio.h</code> which stands for <em>standard input output</em>.</p></li>
+<li><p><code>int main()</code>: Every program written in c starts executing from here.</p></li>
+<li><p><code>ptintf()</code>: Function from stdio.h library.</p></li>
+<li><p><code>return 0;</code>: statement is the <strong><em>"Exit status"</em></strong> of the program. In simple terms, the program ends with this statement.</p></li>
+</ul>
+
+<h4>Compile and execute C program.</h4>
+
+<p>to compile C program there are few options, but here I will show one with <code>cmake</code> and <code>ninja</code>.</p>
+
+<h5>preparation</h5>
+
+<p>To continue make make for project and cd into it:</p>
+
+<pre><code>mkdir project &amp;&amp; cd project
+</code></pre>
+
+<p>and make following project structure:</p>
+
+<pre><code>project
+├── bin
+├── build
+├── build.sh
+├── CMakeLists.txt
+├── headers
+└── src
+</code></pre>
+
+<h6>CMakeLists.txt</h6>
+
+<p>In text editor open CMakeLists.txt and write following content.</p>
+
+<pre><code>cmake_minimum_required (VERSION 3.5)
+
+project (HelloWorld)
+
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror")
+set (source_dir "${PROJECT_SOURCE_DIR}/src/")
+set (include_dir "${PROJECT_SOURCE_DIR}/headers/")
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin/")
+set (PROJ_VERSION "0.1")
+
+include_directories(${include_dir})
+file (GLOB source_files "${source_dir}/*c" "${include_dir}/*h" )
+
+set (exec_name "main_${PROJ_VERSION}")
+
+add_executable  (${exec_name} ${source_files})
+</code></pre>
+
+<p>first we set minimum required version of cmake to 3.5, then some compiler flags so it shows all warnings and errors.</p>
+
+<p>we set then directories where cmake can find source and header files as well as where to put executable and how to name it.</p>
+
+<h6>build.sh</h6>
+
+<p>write:</p>
+
+<pre><code>#!/bin/sh
+
+cmake -B './build' -G "Ninja" -DCMAKE_BUILD_TYPE=Debug
+</code></pre>
+
+<p>save it and make it executable:</p>
+
+<pre><code>sudo chmod +x build.sh
+</code></pre>
+
+<p>this is simple shell script that will just run cmake and set all required options like Build System to <code>ninja</code> , where to put build files and so on.</p>
+
+<h6>source code</h6>
+
+<p>save the code we wrote above and name it as you want with <code>.c</code> extension, and place it in  <code>./src</code> directory.</p>
+
+<p>in terminal, change directory to root of project where build.sh is located and run it</p>
+
+<pre><code>./build.sh
+</code></pre>
+
+<p>the command above will set up everything for compiling , to actually compile the code</p>
+
+<pre><code>cd build &amp;&amp; ninja &amp;&amp; cd ..
+</code></pre>
+
+<p>This will cd to build folder where we set up build files in <code>build.sh</code></p>
+
+<p>you can find executable in <code>bin</code> folder in root of project.</p>
+
+<p>run it:</p>
+
+<pre><code>./bin/main_0.1
+</code></pre>
+
+<p>if everything went fine there should be <code>Hello, World!</code> printed in terminal.</p>
+
       </div>
-      <hr>
-
-      <div class="post-preview">
-        <a href="/posts/c-tutorials.html">
-          <h2 class="post-title">Learn C - Introduction</h2>
-          <h3 class="post-subtitle">Begginers C tutorial</h3>
-        </a>
-        <p class="post-meta">Posted by&nbsp;<a href="/about.html"><em>Andrija Jovnovic on 2020-05-15</em></a></p>
-      </div>
-      <hr>
-
-      <div class="post-preview">
-        <a href="/posts/fastapi-get-started.html">
-          <h2 class="post-title">Get started with FastAPI</h2>
-          <h3 class="post-subtitle">by building polls</h3>
-        </a>
-        <p class="post-meta">Posted by&nbsp;<a href="/about.html"><em>Andrija Jovanovic on 2020-05-13</em></a></p>
-      </div>
-      <hr>
-
+    </div>
+  </div>
+</article>
 
   <div class="clearfix"></div>
   <div class="clearfix"></div>
