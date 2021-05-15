@@ -134,7 +134,7 @@ return 0;
 <ul>
 <li><p><code>#include</code>: Used to "<em>Import</em>" libraries for use, like <code>stdio.h</code> which stands for <em>standard input output</em>.</p></li>
 <li><p><code>int main()</code>: Every program written in c starts executing from here.</p></li>
-<li><p><code>ptintf()</code>: Function from stdio.h library.</p></li>
+<li><p><code>printf()</code>: Function from stdio.h library.</p></li>
 <li><p><code>return 0;</code>: statement is the <strong><em>"Exit status"</em></strong> of the program. In simple terms, the program ends with this statement.</p></li>
 </ul>
 
@@ -268,6 +268,59 @@ return 0;
 <pre><code>&gt;Enter an integer
 &gt;50
 &gt;Integer entered by you is 50
+</code></pre>
+
+<h3>cli arguments</h3>
+
+<p>first argument or argv[0] is allways the program itself.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main( int argc, char *argv[] ) {
+        int i;
+
+    printf( "argc:     %d\n", argc );
+    printf( "argv[0]:  %s\n", argv[0] );
+
+    if ( argc == 1 ) {
+            printf( "No arguments were passed.\n" );
+    } else {
+            printf( "Arguments:\n" );
+
+            for ( i = 1; i &lt; argc; ++i ) {
+                    printf( "  %d. %s\n", i, argv[i] );
+            }
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p><strong>output</strong></p>
+
+<pre><code>&gt;gcc argument.c
+&gt;./a.out first
+argc:     2
+argv[0]:  ./a.out
+Arguments:
+1. first
+&gt;./a.out first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth
+argc:     13
+argv[0]:  ./a.out
+Arguments:
+1. first
+2. second
+3. third
+4. fourth
+5. fifth
+6. sixth
+7. seventh
+8. eighth
+9. ninth
+10. tenth
+11. eleventh
+12. twelfth
+&gt;
 </code></pre>
 
       </div>
