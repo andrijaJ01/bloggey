@@ -120,7 +120,7 @@
 <li><p>How to compile and execute a C program</p></li>
 </ul>
 
-<h4>C Hello world program</h4>
+<h2>C Hello world program</h2>
 
 <pre><code>#include &lt;stdio.h&gt;
 int main() {
@@ -138,11 +138,11 @@ return 0;
 <li><p><code>return 0;</code>: statement is the <strong><em>"Exit status"</em></strong> of the program. In simple terms, the program ends with this statement.</p></li>
 </ul>
 
-<h4>Compile and execute C program.</h4>
+<h2>Compile and execute C program.</h2>
 
 <p>to compile C program there are few options, but here I will show one with <code>cmake</code> and <code>ninja</code>.</p>
 
-<h5>preparation</h5>
+<h3>preparation</h3>
 
 <p>To continue make make for project and cd into it:</p>
 
@@ -160,7 +160,7 @@ return 0;
 └── src
 </code></pre>
 
-<h6>CMakeLists.txt</h6>
+<h3>CMakeLists.txt</h3>
 
 <p>In text editor open CMakeLists.txt and write following content.</p>
 
@@ -186,7 +186,7 @@ add_executable  (${exec_name} ${source_files})
 
 <p>we set then directories where cmake can find source and header files as well as where to put executable and how to name it.</p>
 
-<h6>build.sh</h6>
+<h3>build.sh</h3>
 
 <p>write:</p>
 
@@ -202,7 +202,7 @@ cmake -B './build' -G "Ninja" -DCMAKE_BUILD_TYPE=Debug
 
 <p>this is simple shell script that will just run cmake and set all required options like Build System to <code>ninja</code> , where to put build files and so on.</p>
 
-<h6>source code</h6>
+<h3>source code</h3>
 
 <p>save the code we wrote above and name it as you want with <code>.c</code> extension, and place it in  <code>./src</code> directory.</p>
 
@@ -226,6 +226,49 @@ cmake -B './build' -G "Ninja" -DCMAKE_BUILD_TYPE=Debug
 </code></pre>
 
 <p>if everything went fine there should be <code>Hello, World!</code> printed in terminal.</p>
+
+<h2>Some more examples</h2>
+
+<h3>pause before exiting</h3>
+
+<pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+/* Our first simple C basic program */
+printf("Hello World! ");
+getch();
+return 0;
+}
+</code></pre>
+
+<p><strong>output</strong></p>
+
+<pre><code>&gt;Hello World
+</code></pre>
+
+<h3>accept user input</h3>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+main()
+{
+int number;
+
+printf("Please enter an integer\n");
+scanf("%d",&amp;number);
+
+printf("You have entered number is: %d\n", number);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>output</strong></p>
+
+<pre><code>&gt;Enter an integer
+&gt;50
+&gt;Integer entered by you is 50
+</code></pre>
 
       </div>
     </div>
